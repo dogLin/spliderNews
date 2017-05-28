@@ -1,0 +1,28 @@
+.border{
+	width: 200px;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+	cursor: pointer;
+    .hover{
+    	visibility: hidden;
+    	position: absolute;
+    }
+    &:hover{
+		.hover{
+			visibility: inherit;
+			background:red;
+			position: absolute;
+	    	top:0;
+	    	height: 200px;
+	    	width: 200px;
+	    	background: red;
+	    	background: rgba(0, 0, 0, 0.3);
+	    	line-height: 200px;
+	    	text-align: center;
+	    	color: white;
+	    	font-size: 18px;
+	    	cursor: pointer;
+		}
+    }
+}

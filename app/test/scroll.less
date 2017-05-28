@@ -1,0 +1,31 @@
+.border{
+    border: 1px solid black;
+    width: 70px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    .head{
+        border-bottom: 1px solid black;
+        text-align: center;
+    }
+    ul{
+        list-style: none;
+        margin: 0;
+        overflow: hidden;
+        padding:0px;
+        box-sizing: border-box;
+        width:70px;
+        height: 200px;
+        &:hover{
+            overflow: auto;
+        }
+
+    }
+    li{
+        line-height: 30px;
+        cursor: pointer;
+        &:last-child{
+            margin-bottom: 150px;
+        }
+    }
+}

@@ -1,0 +1,51 @@
+.border{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.7);
+	z-index: 100;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	.loginBox{
+		overflow: hidden;
+		min-width: 400px;
+		max-height: 80%;
+		border: 1px solid gray;
+		background: white;
+		padding: 50px;
+		position: relative;
+		.loginForm{
+			max-width: 300px;
+			margin: auto;
+			.loginBtn{
+				width:100%;
+			}
+			.findpwd{
+				float: right;
+			}
+		}
+		.close{
+		    position: absolute;
+		    right: 2px;
+		    top: 2px;
+		    font-size: 24px;
+		    background: rbga(0, 0, 0, 0.9);
+		    cursor: pointer;
+		    &:hover{
+		    	color:red;
+		    }
+		}
+		&:hover{
+		overflow: overlay;
+		}
+	}
+	.regBtn{
+		width: 100%;
+		margin-top:20px;
+	}
+	&[disabled]{
+		display: none;
+	}
+	
+}

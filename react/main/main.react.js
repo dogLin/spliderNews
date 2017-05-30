@@ -1,7 +1,7 @@
 import React,{Component} from "react";
 import {render} from 'react-dom';
 import Left from "../left/left.react";
-import Login from '../login/Login.react';
+import Login from '../login/login.react';
 import stl from './main.less';
 import { BackTop } from 'antd';
 

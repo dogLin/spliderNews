@@ -8,7 +8,7 @@ import Personal from './personal/personCenter.react';
 import Direct from './personal/direct.react';
 import NewMana from './manage/newsManage.react'
 
-import NewAjax from './ajax/NewAjax';
+import NewAjax from './ajax/newAjax';
 import All from './js/all';
 NewAjax.ifLogin().then((data)=>{
 	All.init(); //初始化全局变量

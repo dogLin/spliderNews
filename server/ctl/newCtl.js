@@ -32,6 +32,7 @@ var NewsCtl = {
 						.skip((page-1)*20)
 						.exec(function(err,result){
 							if(err){
+								console.log(err);
 								res.json({success:false,err:err});
 							}
 							else if(result.length == 0){
@@ -53,6 +54,7 @@ var NewsCtl = {
 				.skip((page-1)*20)
 				.exec(function(err,result){
 					if(err){
+						console.log(err);
 						res.json({success:false,err:err});
 					}
 					else if(result.length == 0){

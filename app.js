@@ -36,12 +36,12 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname,'build')));
 
-app.get('*.js', function (req, res, next) {
-  req.url = req.url + '.gz';
-  res.set('Content-Encoding', 'gzip');
-  console.log(".jsssss");
-  next();
-});
+// app.get('*.js', function (req, res, next) {
+//   req.url = req.url + '.gz';
+//   res.set('Content-Encoding', 'gzip');
+//   console.log(".jsssss");
+//   next();
+// });
 
 app.get('*', function (request, response,next){
 	if(request.url.indexOf('/api') == 0 ){

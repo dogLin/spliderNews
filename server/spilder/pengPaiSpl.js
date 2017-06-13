@@ -32,34 +32,37 @@ var BeginDate = new Date();
 var EndDate;
 
 function doError(err,url,res){
-	console.log(err+url);
-	console.log(url+"===>Error Info:=======> ");
-	console.log(res);
+	console.log("--------------------------------------------");
+	console.log("错误：==>"+err);
+	console.log("错误URL：==>"+url);
+	console.log();
 }
 function filterByTime(news,beginDate,endDate,callback){
-	console.log("beginDate"+beginDate.toLocaleString())
-		if(!beginDate){
-			beginDate = BeginDate;
-		}
-		console.log("+++"+news.date);
-		if(news.date >= new Date(beginDate)  ){
-			console.log("....."+news.date);
-			callback("时间比参数beginDate大"+news.date.toLocaleString() + " // " + beginDate.toLocaleString());
-		}else if(new Date(news.date) <= new Date(endDate) ){
-			console.log("______________________");
-			callback(news.title + news.date.toLocaleString());
+		// if(!beginDate){
+		// 	beginDate = BeginDate;
+		// }
+		console.log("新闻时间："+(news.date?news.date.toLocaleString():'无时间'));
+		if(beginDate && news.date && news.date >= new Date(beginDate)  ){
+			console.log("");
+			console.log("错误URL：==>"+news.url);
+			callback("时间比参数beginDate大，新闻时间是：==>"+newsas.date.toLocaleString() + " 并且beginDate是：==> " + beginDate.toLocaleString());
+
+		}else if( news.date && new Date(news.date) <= new Date(endDate) ){
+			console.log("");
+			callback("时间比参数endDate小，新闻时间和标题是：==>"+news.title + news.date.toLocaleString());
 		}else{
-			console.log(news.date.toLocaleString()+news.title);
+			console.log("新闻标题："+news.title);
 			callback(null,news);
 		}
 }
 
 function getPengPai(url,variety,call,beginDate,endDate){
-	console.log("url"+url);
+	console.log("抓取新闻url：==>"+url);
 		superagent.get(url)
 		.end(function(err,res){
 			if(err){
 				doError(err,url,res);
+				call(null,null);
 			}
 			if(res && res.text){
 				var $ = cheerio.load(res.text);
@@ -85,7 +88,7 @@ function getPengPai(url,variety,call,beginDate,endDate){
 					}
 					superagent.get(url)
 						.end(function(err,res){
-							if(err) doError(err,url,res);
+							if(err) {doError(err,url,res);call(null,null);}
 							if(res && res.text){
 								var $ = cheerio.load(res.text);
 								if(news.ifVideo){
@@ -93,7 +96,13 @@ function getPengPai(url,variety,call,beginDate,endDate){
 									news.video.des = $(".news_video_name").text();
 								}
 								var date = $($(".about_news")[1]).text().trim() || $(".picct_time").text();
-								news.date = new Date(date.split("\n\n")[0].trim());
+								if(date){
+									news.date = new Date(date.split("\n\n")[0].trim());	
+								}else{
+									news.date  = null;
+									console.log("无时间");
+									console.log("date        "+ news.date);
+								}
 								news.content = tool.decode($(".news_part").html());
 								news.zan = parseInt($("#news_praise").text().trim());
 								news.pinL = parseInt($('font').text().split(/[()]/)[1]);
@@ -108,13 +117,15 @@ function getPengPai(url,variety,call,beginDate,endDate){
 								filterByTime(news,beginDate,endDate,callback);
 							}
 						})
-				},function(err,result){
-					if(!err){
-						call(null,result);
-					}else{
-						call(err,result);
-					}
-				})
+						},function(err,result){
+							if(!err){
+								call(null,result);
+							}else{
+								call(err,result);
+							}
+						})
+			}else{
+				call("到底啦！",null);
 			}
 		});
 }
@@ -122,9 +133,8 @@ function getPengPai(url,variety,call,beginDate,endDate){
 function getJiKe(url,variety,call,beginDate,endDate){
 	superagent.get(url)
 		.end(function(err,res){
-			console.log(url);
+			console.log("抓取新闻url：==>"+url);
 			if(err){
-				console.log("出错啦");
 				doError(err,url,res);
 			}
 			if(res && res.text){
@@ -136,14 +146,13 @@ function getJiKe(url,variety,call,beginDate,endDate){
 					news.variety = variety;
 					news.title = $(element.find("img")[0]).attr("alt");
 					news.imgSrc = $(element.find("img")[0]).attr("data-src");
-					console.log(news.imgSrc)
 					news.des = element.find("p").text();
 					news.tag = $(element.find("a")[1]).text();
 					news.url = "http://www.geekpark.net"+$(element.find("a")[0]).attr("href");
 					var url = "http://www.geekpark.net"+$(element.find("a")[0]).attr("href");
 					superagent.get(url)
 						.end(function(err,res){
-							if(err) doError(err,url,res);
+							if(err) {doError(err,url,res);call(null,null);}
 							if(res && res.text){
 								var $ = cheerio.load(res.text);
 								news.date = new Date($(".js-relative-time").attr("data-time")*1000);
@@ -160,6 +169,8 @@ function getJiKe(url,variety,call,beginDate,endDate){
 						call(err,result);
 					}
 				})
+			}else{
+				call("到底啦！",null);
 			}
 		});
 }
@@ -172,7 +183,7 @@ function get(url,variety,call,beginDate,endDate){
 	News.findOne({variety:variety}).sort({date:-1})
 		.exec(function(err,doc){
 			if(err){
-				console.log(err)
+				console.log("查找最近的文章出错：==>"+err)
 			}else{
 				if(doc){
 					EndDate = doc.date;
@@ -187,7 +198,6 @@ function get(url,variety,call,beginDate,endDate){
 			}
 			// ep.emit("upEndDate");
 			if(variety == "极客"){
-				console.log(url);
 				getJiKe.call(null,url,variety,call,beginDate,endDate); 
 			}else{
 				getPengPai.call(null,url,variety,call,beginDate,endDate);  
@@ -233,19 +243,16 @@ var craw = function(type,beginDate,endDate){
 			get(url+data,variety,call,beginDate,endDate);
 		},function(err,result){
 			var newList = [];
-			console.log(result.length);
 			result.map(function(res,index){
 				newList = newList.concat(res);
 			});
 			newList.pop();
 			// newList.pop();
-			console.log(newList.length);
-			console.log(newList[newList.length-1]);
-			console.log(err);
+			console.log("最后的错误：==>"+err);
 			setTimeout(function(){
 				News.insertMany(newList,function(err,docs){
-					if(err){console.log(err+"===================")}
-					console.log(docs.length+"..............")
+					if(err){console.log("插入新闻错误：==>"+err+"===================")}
+					console.log("插入新闻长度：==>"+docs.length+"..............")
 				})
 			},5000);//5秒后持久化
 		});
@@ -255,11 +262,25 @@ var craw = function(type,beginDate,endDate){
 	
 }
 
-// craw(1); //爬时事
+craw(1); //爬时事
 // craw(2); //爬财经
 // craw(3); //爬思想
 // craw(4); //爬生活
 // craw(5);  //爬极客
 // craw(5,null,new Date("2017-05-20 00:00")); //爬极客
 
+					// superagent.get("http://www.thepaper.cn/newsDetail_forward_1706434")
+					// 	.end(function(err,res){
+					// 		if(err) doError(err,url,res);
+					// 		if(res && res.text){
+					// 			var $ = cheerio.load(res.text);
+					// 			var date = $($(".about_news")[1]).text().trim() || $(".picct_time").text();
+					// 			console.log(date);
+					// 			if(date){
+					// 				console.log("xxx");
+					// 			}else{
+					// 				console.log("yy");
+					// 			}
+					// 		}
+					// 	})
 module.exports = craw;

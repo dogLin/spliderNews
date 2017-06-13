@@ -8,7 +8,7 @@
     "start": "webpack",
     "build": "webpack --progress --colors --watch",
     "watch": "webpack-dev-server --hot --progress --colors",
-    "dist": "NODE_ENV='production' &&  webpack --progress --colors",
+    "dist": "export NODE_ENV=production &&  webpack --progress --colors",
     "dist-win": "set  NODE_ENV='production' &&  webpack --progress --colors"
   },
   "keywords": [],

@@ -6,7 +6,8 @@ const WebpackBundleSizeAnalyzerPlugin = require('webpack-bundle-size-analyzer').
 var CompressionWebpackPlugin = require('compression-webpack-plugin');
 // 定义函数判断是否是在当前生产环境，这个很重要，一位开发环境和生产环境配置上有一些区别
 var isProduction = function () {
-     // console.log(process.env.NODE_ENV == 'production');
+  console.log(process.env.NODE_ENV == 'production');
+   console.log(process.env.NODE_ENV );
   if(process.env.NODE_ENV){
     console.log(process.env.NODE_ENV == 'production');
   }

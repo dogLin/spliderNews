@@ -262,7 +262,7 @@ var craw = function(type,beginDate,endDate){
 	
 }
 
-craw(1); //爬时事
+// craw(1); //爬时事
 // craw(2); //爬财经
 // craw(3); //爬思想
 // craw(4); //爬生活

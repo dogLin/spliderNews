@@ -15,7 +15,7 @@ class Main extends Component{
 				<Left/>
 				<div className = {stl.main}>
 					{this.props.children}
-					<div className = {stl.footer}>底部</div>
+					<div className = {stl.footer}><div>dogLin</div><div>Copyright © 2017- 2017</div></div>
 				</div>
 				<Login/>
 				<BackTop />

@@ -3,6 +3,7 @@ import newAjax from '../ajax/newAjax';
 import stl from './new.less';
 import {Icon} from 'antd';
 import Comment from './comment.react';
+import {Link} from 'react-router';
 class News extends Component {
 	constructor(p){
 		super(p);
@@ -101,7 +102,8 @@ class News extends Component {
 			<div className = {stl.border}>
 				{pre} {next}
 				<h2>{news.title}</h2>
-				<div className={stl.time}>{new Date(news.date).toLocaleString()}</div>
+				<div className={stl.left}>新闻来源：<a href= {news.url}>{news.url}</a></div>
+				<div className={stl.left}>{new Date(news.date).toLocaleString()}</div>
 				{video}
 				<div  className={stl.content}  dangerouslySetInnerHTML={{__html: news.content}} />
 				<div className={stl.likeOrNO}>

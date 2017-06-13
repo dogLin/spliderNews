@@ -3,6 +3,7 @@ import {Form,Input,Icon,Button,Radio,Checkbox } from 'antd';
 import stl from './direct.less';
 import newAjax from '../ajax/newAjax';
 import Avatar from "./avatar.react";
+import Editor from "../publish/Editor.react";
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
@@ -28,7 +29,13 @@ class Direct extends Component{
 		super(p);
 		this.state={variety:[],myVariety:[]};
 	}
+	componentWillMount(){
+		if(!DogLin.userInfo){
+			window.location.href = "http://localhost:3000/";
+		}
+	}
 	componentDidMount(){
+
 		this.setState({variety:DogLin.Varietys});
 		this.setState({myVariety:DogLin.userInfo.followTag});
 	}

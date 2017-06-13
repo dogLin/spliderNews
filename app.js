@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var NewCtl = require('./server/ctl/newCtl');
 var UserCtl = require('./server/ctl/userCtl');
+var craw = require('./server/spilder/pengPaiSpl');
 var app = express();
 var multer = require("multer");
  var storage = multer.diskStorage({
@@ -35,6 +36,13 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname,'build')));
 
+app.get('*.js', function (req, res, next) {
+  req.url = req.url + '.gz';
+  res.set('Content-Encoding', 'gzip');
+  console.log(".jsssss");
+  next();
+});
+
 app.get('*', function (request, response,next){
 	if(request.url.indexOf('/api') == 0 ){
 		next();
@@ -43,6 +51,7 @@ app.get('*', function (request, response,next){
 	}
   
 });
+
 app.get('/api/all/',NewCtl.showNewsByPage);
 app.get('/api/news/:id',NewCtl.getNewById);
 app.post('/api/reg',UserCtl.reg);
@@ -74,4 +83,14 @@ app.get('/api/getCommentNews',NewCtl.getCommentNews);
 // NewCtl.showAll();
 app.listen(app.get("port"),function(){
 	console.log('Express server listening on port ' + app.get('port'));
+  
+  setInterval(function(){
+    console.log("爬虫开始---------"+new Date().toLocaleString());
+    craw(1);
+    craw(2);
+    craw(3);
+    craw(4);
+    craw(5);
+  },1000*60*60);
+  // 定时抓取新闻
 });

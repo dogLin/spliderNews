@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack",
-    "dev": "webpack-dev-server"
+    "build": "webpack --progress --colors --watch",
+    "watch": "webpack-dev-server --hot --progress --colors",
+    "dist": "set  NODE_ENV='production' &&  webpack --progress --colors"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "babel-plugin-import": "^1.1.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "compression-webpack-plugin": "^0.4.0",
     "css-loader": "^0.28.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.28.0",
@@ -39,11 +42,12 @@
     "eventproxy": "^0.3.5",
     "express": "^4.15.2",
     "express-session": "^1.15.2",
+    "hommilyeditor": "^3.2.3",
     "jfum": "^1.0.3",
     "mongoose": "^4.9.7",
     "multer": "^1.3.0",
-    "react-dom": "^15.5.4",
     "react": "^15.5.4",
+    "react-dom": "^15.5.4",
     "react-router": "^3.0.5",
     "superagent": "^3.5.2"
   }

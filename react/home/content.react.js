@@ -42,6 +42,7 @@ class Content extends Component{
 		this.getAllNews.call(this,1,next);
 	}
 	componentWillMount(){
+		// document.getElementsByTagName("body")[0].scrollTop = 0;
 	}
 	componentDidMount(){
 		this.getAllNews.call(this,1,this.props);
@@ -58,6 +59,7 @@ class Content extends Component{
 		this.setState({sortStyle:"list"});
 	}
 	getAllNews (page,prop){
+		document.removeEventListener('scroll',this.nextPage);
 		var type = null;
 		if(prop.params.type){
 			type = prop.params.type;
@@ -66,6 +68,8 @@ class Content extends Component{
 				case "Fiance" : this.setState({title:'财经'});break;
 				case "Thought": this.setState({title:'思想'});break;
 				case "Life" : this.setState({title:'生活'});break;
+				case "Jike" : this.setState({title:'极客'});break;
+				case "Video" : this.setState({title:'视频'});break;
 				case "PersonLike":this.setState({title:'订阅'});break;
 				default:this.setState({title:'新闻'});break;
 			}
@@ -89,6 +93,7 @@ class Content extends Component{
 				DogLin.Notify({type:"info",message:"到达底部",des:"到达底部"});
 				this.setState({ifBottom:true});
 			}
+			document.addEventListener('scroll',this.nextPage);
 			
 		})
 	}

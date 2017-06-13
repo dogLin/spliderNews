@@ -10,6 +10,7 @@ import NewMana from './manage/newsManage.react'
 
 import NewAjax from './ajax/newAjax';
 import All from './js/all';
+import NotFound from './404.react';
 NewAjax.ifLogin().then((data)=>{
 	All.init(); //初始化全局变量
 	if(data.result){
@@ -25,6 +26,7 @@ NewAjax.ifLogin().then((data)=>{
 				<Route path='/user/direct' component={Direct} />
 				<Route path='/news/:type' component = {Home} />
 				<Route path='/manage/new' component = {NewMana} />
+				 <Route path="*" component={NotFound} />
 			</Route>
 		</Router>,
 		document.getElementById('root')

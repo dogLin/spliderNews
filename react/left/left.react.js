@@ -77,6 +77,7 @@ class Left extends Component{
 			this.setState({user:undefined});
 			DogLin.Notify({message:"注销成功",des:"您已注销成功！",type:"success"});
 			DogLin.userInfo = undefined;
+			window.location.href = "http://localhost:3000/";
 		})
 	}
 	render(){
@@ -101,14 +102,34 @@ class Left extends Component{
 		}
 		var backStyle = {background:"url("+DogLin.leftBackImg+")"};
 		var followTag = DogLin.userInfo?DogLin.userInfo.followTag:[];
-		 var manage = '';
+		var manage = '';
+		var personLike = null;
 		 if(DogLin.userInfo&&DogLin.userInfo.type == "mana"){
 		 	manage = (
 				<SubMenu key="sub4" title={<span><Icon type="setting" /><span>后台管理</span></span>}>
 							<Menu.Item key="11"><Link to = "/manage/new">管理新闻</Link></Menu.Item>
-							<Menu.Item key="10">管理爬虫</Menu.Item>
-							<Menu.Item key="12">数据统计</Menu.Item>
 				 </SubMenu>
+		 	)
+		 }
+		 if(DogLin.userInfo){
+		 	personLike = (
+				<SubMenu key="sub2" title={<span><Icon type="appstore" /><span>订&nbsp;&nbsp;&nbsp;阅</span></span>}>
+							<Menu.Item key="5"><Link to = "/news/PersonLike">全部</Link></Menu.Item>
+							{
+								followTag.map(function(data,index){
+									var url = '';
+									switch(data){
+										case "时事": url = "/news/Politic";break;
+										case "财经" :  url = "/news/Fiance";break;
+										case "思想":  url = "/news/Thought";break;
+										case "生活" :  url = "/news/Life";break;
+										case "极客" :  url = "/news/Jike";break;
+										default:url = '';break;
+									}
+									return (<Menu.Item key={index+6}><Link to = {url}>{data}</Link></Menu.Item>)
+								})
+							}
+				        </SubMenu>
 		 	)
 		 }
 		var nav = (
@@ -119,29 +140,16 @@ class Left extends Component{
 					</div>
 					<Menu  mode="inline" theme="dark" openKeys = {this.state.openKeys} onClick = {this.handleClick.bind(this)} onOpenChange={this.onOpenChange.bind(this)}
 						defaultOpenKeys = {['sub1']} selectedKeys={[this.state.current]} style={{ width: "100%" ,background:'rgba(0,0,0,0)'}}>
-						<SubMenu key = 'sub1' title={<span><Icon type="home" /><span><Link to = "/">分&nbsp;&nbsp;&nbsp;类</Link></span></span> }>
+						<SubMenu key = 'sub1' title={<span><Icon type="home" /><span>分&nbsp;&nbsp;&nbsp;类</span></span> }>
 							<Menu.Item key="1"><Link to = "/news">全部</Link></Menu.Item>
 							<Menu.Item key="0"><Link to = "/news/Politic">时事</Link></Menu.Item>
 							<Menu.Item key="2"><Link to = "/news/Fiance">财经</Link></Menu.Item>
 							<Menu.Item key="3"><Link to = "/news/Thought">思想</Link></Menu.Item>
 							<Menu.Item key="4"><Link to = "/news/Life">生活</Link></Menu.Item>
+							<Menu.Item key="41"><Link to = "/news/Jike">极客</Link></Menu.Item>
+							<Menu.Item key="v"><Link to = "/news/Video">视频</Link></Menu.Item>
 						</SubMenu>
-						<SubMenu key="sub2" title={<span><Icon type="appstore" /><span>订阅</span></span>}>
-							<Menu.Item key="5"><Link to = "/news/PersonLike">全部</Link></Menu.Item>
-							{
-								followTag.map(function(data,index){
-									var url = '';
-									switch(data){
-										case "时事": url = "/news/Politic";break;
-										case "财经" :  url = "/news/Fiance";break;
-										case "思想":  url = "/news/Thought";break;
-										case "生活" :  url = "/news/Life";break;
-										default:url = '';break;
-									}
-									return (<Menu.Item key={index+6}><Link to = {url}>{data}</Link></Menu.Item>)
-								})
-							}
-				        </SubMenu>
+						{personLike}
 				        {manage}
 				        
 					</Menu>

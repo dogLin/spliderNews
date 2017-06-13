@@ -1,12 +1,16 @@
 var News = require("../model/news");
 var User = require("../model/user");
+var eventproxy = require("eventproxy");
+var ep = new eventproxy();
 function changeToType(type){
 	switch(type){
 				case "Politic": type = "时事";break;
 				case "Fiance":type = "财经";break;
 				case "Thought":type = "思想";break;
 				case "Life":type = "生活";break;
+				case "Jike":type = "极客";break;
 				case "PersonLike":type = "订阅";break;
+				case "Video":type = "video";break;
 				default:type = null;
 			}
 	console.log(type);
@@ -43,6 +47,22 @@ var NewsCtl = {
 						})
 					}
 				})
+		}else if(type == "video"){
+			pro = News.find({ifVideo:true});
+						pro.sort({date:-1})
+						.limit(20)
+						.skip((page-1)*20)
+						.exec(function(err,result){
+							if(err){
+								console.log(err);
+								res.json({success:false,err:err});
+							}
+							else if(result.length == 0){
+								res.json({success:false,message:"到达底部!"})
+							}else{
+								res.json({success:true,data:result});
+							}
+						})
 		}else{
 			if(type){
 				pro = News.find({variety:type});
@@ -204,7 +224,16 @@ var NewsCtl = {
 			})
 	},
 	getNewByName:function(req,res){
-		News.find({title:new RegExp(req.query.name)})
+		console.log(req.query.name);
+		var result= [];
+		var keys = req.query.name.split(" ");
+		for(var i = 0;i<keys.length;i++){
+			if(keys[i]){
+				result.push({"title":new RegExp(keys[i])})
+			}
+		}
+		console.log(result);
+		News.find({"$or":result})
 			.sort({date:-1})
 			.exec(function(err,doc){
 				if(err){ 
@@ -213,8 +242,26 @@ var NewsCtl = {
 				}else{
 					res.json({success:true,data:doc});
 				}
+
 			})
 	},
+
+	// getNewByName:function(req,res){
+	// 	console.log(req.query.name);
+	// 	var result= [];
+	// 	var keys = req.query.name.split(" ");
+	// 	News.find({title:new RegExp(req.query.name)})
+	// 		.sort({date:-1})
+	// 		.exec(function(err,doc){
+	// 			if(err){ 
+	// 				console.log(err);
+	// 				res.json({success:false,message:err});
+	// 			}else{
+	// 				res.json({success:true,data:doc});
+	// 			}
+
+	// 		})
+	// },
 	getLikes:function(req,res){
 		News.find({likes:{$elemMatch:{$in:[req.session.user._id]}}})
 			.exec(function(err,doc){

@@ -14,6 +14,9 @@ class personCenter extends Component{
 		}
 	}
 	componentWillMount(){
+		if(!DogLin.userInfo){
+			window.location.href = "http://localhost:3000/";
+		}
 		NewAjax.getLikes().then((result)=>{
 			if(result.success){
 				this.setState({

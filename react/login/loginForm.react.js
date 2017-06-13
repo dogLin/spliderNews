@@ -24,6 +24,7 @@ class LoginForm extends Component{
 							DogLin.Notify({type:"success",message:'登录成功',des:"登录成功"});
 						}
 						event.pub('login',data.user);//发布登录事件
+						window.location.reload();
 						me.props.close();
 					}else{
 						DogLin.Notify({type:'error',message:'登录失败',des:"密码错误"});

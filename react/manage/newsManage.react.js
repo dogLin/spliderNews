@@ -50,7 +50,7 @@ class Content extends Component{
 		allNews = this.state.news || [];
 		const columns = [
 		  { title: '标题', dataIndex: 'title', key: 'title' },
-		  { title: '日期', dataIndex: 'date', key: 'date',sorter: (a, b) =>	new Date(a.date) - new Date(b.date) },
+		  { title: '日期', dataIndex: 'date', key: 'date',render:(text,data)=><div>{new Date(data.date).toLocaleString()}</div>,sorter: (a, b) =>	new Date(a.date) - new Date(b.date) },
 		  { title: '类别', dataIndex: 'variety', key: 'varirty' },
 		  { title: '操作', dataIndex: '', key: 'x', render: (text,data) => <a onClick={this.deleteNew.bind(this,data)}><Icon type="delete" />删除</a> },
 		  { title: '查看', dataIndex: '', key: 'v', render: (text,data) => <a target="blank" href={"/news/id/"+data._id}><Icon type="eye-o" />查看</a> },

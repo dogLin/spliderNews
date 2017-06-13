@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {Input,Button} from 'antd'
 import stl from './comment.less';
 import NewAjax from '../ajax/newAjax';
+import ComItem from './comItem.react';
 class Comment extends Component{
 	constructor(p){
 		super(p);
@@ -11,6 +12,9 @@ class Comment extends Component{
 	}
 	componentWillMount(){
 		
+	}
+	componentWillUnMount(){
+		document.getElementsByTagName("body")[0].scrollTop = 0;
 	}
 	componentWillReceiveProps(next){
 		this.setState({comList:next.commentList});
@@ -32,6 +36,7 @@ class Comment extends Component{
 					if(!result.success){
 						DogLin.Notify({message:"系统异常",des:result.message,type:"error"});
 					}else{
+						 this.refs.com.refs.input.value = '';
 						DogLin.Notify({message:"评论成功",des:result.message,type:"success"});
 						var list = this.state.comList;
 						list.push(comment);
@@ -46,6 +51,22 @@ class Comment extends Component{
 	render(){
 		var user = DogLin.userInfo;
 		console.log(this.state);
+		var comList = this.state.comList;
+		var commentList = [];
+		for(let i = comList.length-1;i>=0;i--){
+			var comment = comList[i];
+			var com = (<div className={stl.com} key = {i}>
+									<div>
+										<img className="smHead" src = {comment.headPic||DogLin.defaultHead}/>
+										<span>{comment.userName}</span>
+									</div>
+									<div className={stl.comR}>
+										<div>{comment.content}</div>
+										<div className={stl.comTime}>{new Date(comment.date).toLocaleString()}</div>
+									</div>
+						</div>);
+			commentList.push(com);
+		}
 		return(
 			<div className={stl.border}>
 				<div className={stl.add}>
@@ -59,15 +80,10 @@ class Comment extends Component{
 					<div className = {stl.title}>评论列表</div>
 					<div>
 						{
-							this.state.comList.map(function(comment,index){
-								return (<div className={stl.com} key = {index}>
-									<img className="smHead" src = {comment.headPic||DogLin.defaultHead}/>
-									<div className={stl.comR}>
-										<div><span>{comment.userName}:</span>{comment.content}</div>
-										<div>{new Date(comment.date).toLocaleString()}</div>
-									</div>
-								</div>)
-							})
+							commentList
+						}
+						{
+							this.state.comList.length == 0 ? <div>暂无评论</div>:""
 						}
 					</div>
 				</div>
@@ -78,3 +94,15 @@ class Comment extends Component{
 }
 
 module.exports = Comment;
+// this.state.comList.map(function(comment,index){
+// 								return (<div className={stl.com} key = {index}>
+// 									<div>
+// 										<img className="smHead" src = {comment.headPic||DogLin.defaultHead}/>
+// 										<span>{comment.userName}</span>
+// 									</div>
+// 									<div className={stl.comR}>
+// 										<div>{comment.content}</div>
+// 										<div className={stl.comTime}>{new Date(comment.date).toLocaleString()}</div>
+// 									</div>
+// 								</div>)
+// 							})

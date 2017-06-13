@@ -23,7 +23,7 @@ class NewCard extends Component{
 			
 		}
 		return(
-			<Link to={url} className={style} >
+			<Link to={url} className={style} target="_blank">
 				<div className={stl.img}>
 					<img src={news.imgSrc} />
 					{videoTime}
@@ -32,12 +32,14 @@ class NewCard extends Component{
 					<h2>{news.title}</h2>
 					<span>{news.des}</span>
 					<div>
-						{new Date(news.date).toLocaleString()} 
-						<span className = {stl.zan}>
-							<Icon type="like-o"/>{news.zan} <Icon type="message" />{news.pinL}
-						</span>
+						<div>
+							{new Date(news.date).toLocaleString()} 
+							<span className = {stl.zan}>
+								<Icon type="like-o"/>{news.zan} <Icon type="message" />{news.pinL}
+							</span>
+						</div>
+						<div> <Icon type="tag-o" />{news.variety}</div>
 					</div>
-					<div> <Icon type="tag-o" />{news.variety}</div>
 				</div>
 			</Link>
 		)

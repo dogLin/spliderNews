@@ -83,7 +83,11 @@ app.get('/api/getCommentNews',NewCtl.getCommentNews);
 // NewCtl.showAll();
 app.listen(app.get("port"),function(){
 	console.log('Express server listening on port ' + app.get('port'));
-  
+  // craw(1);
+  // craw(2);
+  // craw(3);
+  // craw(4);
+  // craw(5);
   setInterval(function(){
     console.log("爬虫开始---------"+new Date().toLocaleString());
     craw(1);
@@ -91,6 +95,6 @@ app.listen(app.get("port"),function(){
     craw(3);
     craw(4);
     craw(5);
-  },1000*60*60);
+  },1000*60*30);
   // 定时抓取新闻
 });

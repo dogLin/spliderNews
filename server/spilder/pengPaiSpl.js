@@ -174,7 +174,7 @@ function get(url,variety,call,beginDate,endDate){
 			if(err){
 				console.log(err)
 			}else{
-				if(doc.length){
+				if(doc){
 					EndDate = doc.date;
 					if(!endDate){
 						endDate = EndDate;

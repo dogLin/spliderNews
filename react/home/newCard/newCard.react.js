@@ -30,7 +30,7 @@ class NewCard extends Component{
 				</div>
 				<div className={stl.new_op}>
 					<h2>{news.title}</h2>
-					<span>{news.des}</span>
+					<span>{news.des.length < 50 ? news.des : (news.des.substring(0,47)+"...")}</span>
 					<div>
 						<div>
 							{new Date(news.date).toLocaleString()} 
